@@ -1,0 +1,7 @@
+/node_modules
+/reports
+/allure-results
+/allure-report
+.env
+junit.xml
+test-report.html
