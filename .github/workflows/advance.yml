@@ -1,0 +1,55 @@
+name: Run Jest Tests
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+jobs:
+  jest-tests:
+    name: Run Jest Tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18, 20] # Run tests on multiple Node.js versions
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm' # Cache npm dependencies
+
+      - name: Install dependencies
+        run: npm ci # Faster and more reliable than 'npm install'
+
+      - name: Run Jest Tests with Coverage
+        run: npx jest test.spec.ts --coverage --verbose
+        env:
+          NODE_ENV: test
+
+      - name: Upload Jest Coverage Report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: jest-coverage-report
+          path: coverage/
+          retention-days: 7
+
+      - name: Upload Jest Test Results
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: jest-test-results
+          path: test-results/
+          retention-days: 7
