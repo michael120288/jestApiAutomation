@@ -42,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-            name: jest-coverage-report-${{ github.run_id }} # Unique name per run
+            name: jest-coverage-report-node-${{ matrix.node-version }} # Unique per Node.js version
             path: coverage/
             retention-days: 7
             #overwrite: true - if you don't use unique id
@@ -52,6 +52,6 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: jest-test-results
+          name: jest-test-results-node-${{ matrix.node-version }}
           path: test-results/
           retention-days: 7
