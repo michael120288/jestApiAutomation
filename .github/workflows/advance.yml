@@ -3,12 +3,13 @@ name: Run Jest Tests
 on:
   push:
     branches:
-      - main
+      - master
       - develop
   pull_request:
     branches:
-      - main
+      - master
       - develop
+  workflow_dispatch:
 
 jobs:
   jest-tests:
