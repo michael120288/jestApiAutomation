@@ -42,9 +42,11 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: jest-coverage-report
-          path: coverage/
-          retention-days: 7
+            name: jest-coverage-report-${{ github.run_id }} # Unique name per run
+            path: coverage/
+            retention-days: 7
+            #overwrite: true - if you don't use unique id
+
 
       - name: Upload Jest Test Results
         if: failure()
